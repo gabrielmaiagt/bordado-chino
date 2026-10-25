@@ -149,14 +149,20 @@ function render() {
 
   <footer class="offer-footer"><p class="disclaimer">${DISCLAIMER}</p><p class="copyright">${COPYRIGHT}</p></footer>
 
-  <div class="offer-bottom-bar"><a class="${btnClass('cta', 'default', 'cta-pulse')}" href="${checkout()}" target="_blank" rel="noopener noreferrer">VER MI PLAN PERSONALIZADO</a></div>
+  <div class="offer-bottom-bar"><button type="button" class="${btnClass('cta', 'default', 'cta-pulse')}" data-to-offer>VER MI PLAN PERSONALIZADO</button></div>
 </main>`;
 }
 
 app.addEventListener('click', e => {
   const b = e.target.closest('button');
   if (!b) return;
-  if (b.dataset.g) { gi = (gi + Number(b.dataset.g) + GALLERY.length) % GALLERY.length; render(); }
+  if (b.hasAttribute('data-to-offer')) {
+    // Leva até o card de oferta (o checkout fica no botão do card)
+    const card = document.getElementById('meu-plano');
+    card.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    card.focus({ preventScroll: true });
+  }
+  else if (b.dataset.g) { gi = (gi + Number(b.dataset.g) + GALLERY.length) % GALLERY.length; render(); }
   else if (b.dataset.dot) { gi = Number(b.dataset.dot); render(); }
   else if (b.dataset.faq) { const i = Number(b.dataset.faq); faqOpen = faqOpen === i ? null : i; render(); }
 });
