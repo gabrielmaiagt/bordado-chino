@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Tu plan de Bordado Chino | Luana Duarte</title>
+<meta name="description" content="Tu plan personalizado de bordado chino con Luana Duarte está listo."/>
+<link rel="preload" as="font" type="font/woff2" href="assets/dm-serif-display-latin-400-normal-C5_t9oOD.woff2" crossorigin="anonymous"/>
+<link rel="preload" as="font" type="font/woff2" href="assets/dm-sans-latin-standard-normal-Bf69Tn_J.woff2" crossorigin="anonymous"/>
+<link rel="stylesheet" href="assets/styles.css"/>
+<link rel="stylesheet" href="assets/offer-styles.css"/>
+<link rel="stylesheet" href="assets/custom.css"/>
+<!-- PIXEL / UTMIFY: cole aqui -->
+</head>
+<body>
+<div id="app"></div>
+<script src="assets/common.js"></script>
+<script>
+// ====== OFERTA ======
+const PRICE = 'US$ 9.90';
+const PRICE_FROM = 'US$ 47.00';
+
+const INCLUDES = [
+  'Curso completo de Bordado Chino, desde cero hasta avanzado',
+  'Videoclases con el paso a paso para crear tus piezas',
+  'Color en la Práctica: Luz, Sombra y Degradado en el Bordado',
+  'Bastidor Bien Cuidado: Cómo Conservar tus Bordados Decorativos',
+  'Bordado en Relieve: Texturas que Cobran Vida',
+  'Acceso de por vida + actualizaciones',
+  'Ideas e inspiración para bordar tus próximas piezas',
+];
+const BONUSES = [
+  { title: 'Clientes Más Allá de Instagram', description: '¡Tus próximos clientes pueden estar donde todavía no has buscado! Descubre cómo llevar tus bordados a WhatsApp, Facebook Marketplace, ferias y bazares.' },
+  { title: 'Bordados para Fechas Especiales', description: 'Convierte el Día de la Madre, Navidad, quinceañeras, bodas y bautizos en oportunidades de venta… ¡y tus bordados en el regalo que todos van a querer dar!' },
+  { title: 'Una Marca con Tu Firma', description: '¡Haz que tu marca sea tan especial como tus bordados y que te recuerden por lo que solo tú creas!' },
+  { title: 'Tu Bordado en la Vitrina Correcta', description: '¡Tu talento merece ser visto! Descubre cómo poner tus piezas frente a quien valora y quiere comprar tu trabajo.' },
+  { title: 'De la Primera Compra al Próximo Regalo', description: '¡La primera compra puede ser solo el comienzo! Enamora a tus clientes y sé la primera persona en la que piensen cuando quieran regalar algo.' },
+];
+const FAQ = [
+  { q: '¿El acceso es de por vida?', a: '¡Sí! Tienes acceso de por vida al curso, incluyendo las actualizaciones.' },
+  { q: '¿Las clases son en video?', a: '¡Sí! Las videoclases te muestran el paso a paso para que vayas siguiéndolas y creando tus piezas.' },
+  { q: '¿El precio está en dólares? ¿Puedo pagar desde mi país?', a: 'Sí. El precio se muestra en dólares, pero al momento del pago se convierte automáticamente a la moneda de tu país. Puedes pagar con tarjeta o con los medios de pago disponibles en tu país.' },
+  { q: '¿Cómo voy a recibir mi acceso?', a: 'Los datos de acceso te llegan en la confirmación de tu compra, directo a tu correo.' },
+  { q: '¿Necesito tener experiencia para empezar?', a: 'No. El curso empieza desde cero y te enseña cada paso con plantillas y clases paso a paso.' },
+  { q: '¿Cuánto tiempo al día le tengo que dedicar?', a: 'Puedes ver las clases a tu ritmo y organizar tu práctica según el tiempo que tengas disponible.' },
+  { q: '¿Hay garantía?', a: '¡Sí! Tienes 7 días de garantía para probarlo sin compromiso. Si no te convence, te devolvemos el 100% de tu dinero.' },
+];
+const GALLERY = [
+  ['bird-flower-embroidery', 'Pájaro bordado entre ramas de flores rosas'],
+  ['butterfly-embroidery', 'Mariposas y ramas verdes bordadas en bastidor'],
+  ['toucan-embroidery', 'Bastidor con tucán bordado sostenido al aire libre'],
+  ['dog-embroidery', 'Retrato de perrito bordado en bastidor decorativo'],
+];
+const REVIEWS = [
+  { name: 'Renata Paredes', photo: 'renata-profile', text: 'Lo que más me gustó es que Luana enseña directo y sin rodeos. Nada de dar vueltas para explicar, en las videoclases te muestra cómo hacer cada paso. Son muchas piezas que aprendes a hacer solo viendo el video: la ves a ella haciéndolo y tú vas haciendo igual. ¡¡En serio, súper sencillo!!' },
+  { name: 'Inés Castro', photo: 'ivanilde-profile', text: 'Las plantillas facilitan muchísimo. No es un desorden de información. Pensé que me iba a perder, pero con la forma en que Luana enseña en las videoclases es mucho más fácil aprender, ¡me encantó! ¡Se lo recomiendo a todas mis amigas!' },
+  { name: 'Elena Vargas', photo: 'helena-profile', text: 'Las plantillas me ayudaron a entender por dónde empezar. Me gustó seguir cada puntada en las videoclases y poder volver cuando me surgía una duda. ¡El paso a paso hizo la práctica mucho más tranquila!' },
+  { name: 'Marcela Ortiz Salazar', photo: 'marcia-profile', text: 'Pensé que me iba a confundir con los materiales y las puntadas, pero ver cada etapa explicada hizo toda la diferencia. Con las plantillas al lado pude practicar a mi ritmo y disfrutar cada momento del bordado.' },
+  { name: 'Tatiana Acosta Ríos', photo: 'tatiane-profile', text: 'Lo que más me gustó fue lo claras que son las clases. Puedes ver los detalles, pausar y repetir con calma. ¡Las plantillas dejan todo organizado y te ayudan a ganar confianza para probar piezas nuevas!' },
+];
+
+let gi = 0, faqOpen = 0;
+const app = document.getElementById('app');
+const checkout = () => withParams(window.CHECKOUT_URL);
+
+function render() {
+  const [gk, galt] = GALLERY[gi];
+  app.innerHTML = `<main class="offer-page">
+  <div class="quiz-top">
+    <a class="${btnClass('back', 'icon')}" href="${withParams('index.html')}" aria-label="Volver al quiz">${ICON.arrowLeft}</a>
+    <progress class="top-progress" value="10" max="10" aria-label="Quiz completado"></progress>
+  </div>
+
+  <header class="offer-congratulations">
+    <h1>¡Felicidades!</h1>
+    <p>Fuiste seleccionada para participar en el curso<br/><strong>BORDADO CHINO</strong></p>
+  </header>
+
+  <section class="offer-section offer-inclusions">
+    <h2>Mira todo lo que vas a recibir en el curso <span class="terracotta-text">Bordado Chino</span></h2>
+    <ul>${INCLUDES.map(t => `<li>${ICON.check}<span>${t}</span></li>`).join('')}</ul>
+  </section>
+
+  <section class="offer-section">
+    <h2>Mira algunas de las <span class="terracotta-text">muchas piezas</span> que vas a empezar a hacer:</h2>
+    <div class="offer-gallery">
+      ${img(gk, { sizes: '(max-width: 400px) calc(100vw - 40px), (max-width: 420px) 360px, (max-width: 436px) calc(100vw - 36px), 400px', alt: galt })}
+      <button type="button" class="${btnClass('ghost', 'icon', 'gallery-arrow gallery-previous')}" aria-label="Pieza anterior" data-g="-1">${ICON.chevronLeft}</button>
+      <button type="button" class="${btnClass('ghost', 'icon', 'gallery-arrow gallery-next')}" aria-label="Siguiente pieza" data-g="1">${ICON.chevronRight}</button>
+    </div>
+    <div class="gallery-dots" aria-label="Elegir pieza">${GALLERY.map((_, i) => `<button type="button" class="${btnClass('ghost', 'icon', 'gallery-dot')}" aria-label="Ver pieza ${i + 1}" aria-pressed="${i === gi}" data-dot="${i}"><span></span></button>`).join('')}</div>
+  </section>
+
+  <section class="offer-section offer-bonuses">
+    <h2>${ICON.gift} ¡Llévate 5 BONOS con tu curso!</h2>
+    ${BONUSES.map((b, i) => `<article class="bonus-row"><h3><span class="bonus-label">🎁 BONO ${i + 1}</span> — ${b.title}</h3><p>${b.description}</p></article>`).join('')}
+  </section>
+
+  <section class="offer-section offer-materials" aria-labelledby="materials-title">
+    <h2 id="materials-title">Tus materiales de <span class="terracotta-text">Bordado Chino</span></h2>
+    <figure>${img('training-materials', { sizes: '(max-width: 420px) calc(100vw - 40px), 400px', alt: 'Mujer bordando una flor mientras sigue a la profesora en una videoclase en la tablet' })}<figcaption>Videoclases y plantillas para acompañarte en cada paso</figcaption></figure>
+    <figure>${img('training-book', { sizes: '(max-width: 420px) calc(100vw - 40px), 400px', alt: 'Portada de la guía Bordado Chino junto a páginas abiertas con materiales, puntadas, paso a paso, paleta de colores, flores y pájaros' })}<figcaption>Lo que vas a encontrar dentro de tu material</figcaption></figure>
+    <p class="materials-note">Imágenes representativas de los materiales digitales. Acceso en línea, no se envían libros ni materiales físicos.</p>
+  </section>
+
+  <section class="offer-section offer-payment" id="meu-plano" tabindex="-1" aria-label="Precio de tu plan">
+    <div class="offer-price">
+      <p class="price-banner">PAGO ÚNICO · SIN MENSUALIDADES</p>
+      <div class="price-content">
+        <h2>Bordado<br/>Chino</h2>
+        <div class="price-values">
+          <small>de <s>${PRICE_FROM}</s> por:</small>
+          <strong>${PRICE}</strong>
+          <small class="price-note">convertido <b>automáticamente</b> a la moneda de tu país</small>
+        </div>
+      </div>
+    </div>
+    <a class="${btnClass('cta', 'default', 'cta-pulse offer-price-cta')}" href="${checkout()}" target="_blank" rel="noopener noreferrer">VER MI PLAN PERSONALIZADO</a>
+    <div class="offer-guarantee">
+      <div class="guarantee-medal" aria-label="Garantía de 7 días">${ICON.shield}<strong>7</strong><span>DÍAS</span></div>
+      <div class="guarantee-copy">
+        <h3>7 DÍAS DE GARANTÍA</h3>
+        <strong>¡PRUÉBALO SIN COMPROMISO!</strong>
+        <p>TE DEVOLVEMOS<br/>EL 100% DE TU DINERO</p>
+      </div>
+    </div>
+    <div class="offer-security">
+      ${ICON.lock}<strong>COMPRA 100%<br/><b>SEGURA</b></strong>${ICON.shield}
+      <div class="payment-methods">${ICON.creditCard}<span>Tarjeta</span><span>Pago local</span></div>
+    </div>
+    <p class="offer-availability">${ICON.alert} ¡Date prisa! Solo quedan 8 cupos disponibles</p>
+  </section>
+
+  <section class="offer-section offer-teacher">
+    ${img('luana-avatar', { sizes: '185px', alt: 'Luana Duarte, profesora de Bordado Chino' })}
+    <h2>Luana Duarte<br/><span class="terracotta-text">Curso Bordado Chino</span></h2>
+    <p>Te voy a enseñar el paso a paso para crear piezas preciosas de Bordado Chino, aunque nunca hayas hecho nada parecido.</p>
+  </section>
+
+  <section class="offer-section offer-reviews">
+    <h2>Mira lo que dicen las alumnas sobre el curso:</h2>
+    <div class="offer-review-list">${REVIEWS.map(r => `<article class="offer-review"><div class="reviewer">${img(r.photo, { sizes: '48px', alt: r.name })}<div><span class="offer-review-stars" aria-label="5 estrellas">★★★★★</span><strong>${r.name}</strong></div></div><p>${r.text}</p></article>`).join('')}</div>
+  </section>
+
+  <section class="offer-section offer-faq">
+    <h2>Preguntas frecuentes</h2>
+    ${FAQ.map((f, i) => `<div class="faq-row"><button class="${btnClass('ghost', 'default', 'faq-trigger')}" aria-expanded="${faqOpen === i}" aria-controls="faq-${i}" data-faq="${i}">${ICON.chevronRight.replace('class="lucide', `class="${faqOpen === i ? 'faq-chevron-open ' : ''}lucide`)}<span>${f.q}</span></button>${faqOpen === i ? `<p id="faq-${i}">${f.a}</p>` : ''}</div>`).join('')}
+  </section>
+
+  <footer class="offer-footer"><p class="disclaimer">${DISCLAIMER}</p><p class="copyright">${COPYRIGHT}</p></footer>
+
+  <div class="offer-bottom-bar"><a class="${btnClass('cta', 'default', 'cta-pulse')}" href="${checkout()}" target="_blank" rel="noopener noreferrer">VER MI PLAN PERSONALIZADO</a></div>
+</main>`;
+}
+
+app.addEventListener('click', e => {
+  const b = e.target.closest('button');
+  if (!b) return;
+  if (b.dataset.g) { gi = (gi + Number(b.dataset.g) + GALLERY.length) % GALLERY.length; render(); }
+  else if (b.dataset.dot) { gi = Number(b.dataset.dot); render(); }
+  else if (b.dataset.faq) { const i = Number(b.dataset.faq); faqOpen = faqOpen === i ? null : i; render(); }
+});
+
+render();
+window.scrollTo({ top: 0 });
+</script>
+</body>
+</html>

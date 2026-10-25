@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<title>Tu plan de Bordado Chino | Luana Duarte</title>
+<meta name="description" content="Personaliza tu plan de bordado chino con Luana Duarte. Cuéntanos tu experiencia, tus metas y los estilos que quieres aprender."/>
+<meta property="og:title" content="Tu plan de Bordado Chino | Luana Duarte"/>
+<meta property="og:description" content="Descubre tu camino en el arte del bordado chino con un plan personalizado."/>
+<meta property="og:type" content="website"/>
+<link rel="preload" as="font" type="font/woff2" href="assets/dm-serif-display-latin-400-normal-C5_t9oOD.woff2" crossorigin="anonymous"/>
+<link rel="preload" as="font" type="font/woff2" href="assets/dm-sans-latin-standard-normal-Bf69Tn_J.woff2" crossorigin="anonymous"/>
+<link rel="preload" as="image" href="img/luana-hero-698.webp" imagesrcset="img/luana-hero-420.webp 420w, img/luana-hero-698.webp 698w" imagesizes="(max-width: 416px) calc(100vw - 36px), (max-width: 600px) 380px, 420px" fetchpriority="high"/>
+<link rel="stylesheet" href="assets/styles.css"/>
+<link rel="stylesheet" href="assets/custom.css"/>
+<!-- PIXEL / UTMIFY: cole aqui -->
+</head>
+<body>
+<div id="app"></div>
+<script src="assets/common.js"></script>
+<script>
+const QUESTIONS = [
+  { title: 'Para empezar, cuéntame algo: ¿Cuál es tu nivel de experiencia con el ', highlight: 'Bordado', suffix: '?', options: [
+    ['🥰', 'Ya hago algunas piezas, pero quiero mejorar mis técnicas'],
+    ['😁', 'Sé hacer algunas piezas sencillas, pero quiero aprender más'],
+    ['🧵', 'Nunca lo he hecho, pero quiero empezar']] },
+  { title: '¿Este va a ser tu primer curso de ', highlight: 'Bordado Chino', suffix: '?', options: [
+    ['🤩', 'Nunca he hecho ningún curso, este será el primero.'],
+    ['📖', 'Ya hice otro curso'],
+    ['🎓', 'Ya hice varios cursos']] },
+  { title: '¿Cuánto tiempo tienes disponible para ', highlight: 'aprender', suffix: '?', options: [
+    ['🕐', '30 minutos – 1 hora'],
+    ['🕒', '2 – 4 horas'],
+    ['🕓', '¡Tengo bastante tiempo libre!']] },
+  { title: '¿Qué es lo que más quieres lograr con el ', highlight: 'Bordado Chino', suffix: '?', options: [
+    ['💵', 'Quiero trabajar desde casa y/o tener un ingreso extra'],
+    ['📈', 'Quiero tener más libertad de tiempo y trabajar cuando yo quiera'],
+    ['💰', 'Ayudar con los gastos de la casa y vivir mejor'],
+    ['💖', 'Encontrar paz, relajarme y tener un momento solo para mí creando arte']] },
+  { title: 'Cuando aprendas a hacer las piezas de ', highlight: 'Bordado Chino', suffix: ', ¿cuál va a ser tu meta?', options: [
+    ['💵', 'Aprender a vender y ganar más'],
+    ['🧵', 'Hacerlo solo como pasatiempo'],
+    ['💲', 'Mejorar los resultados de mi negocio']] },
+  { title: '¿Qué estilo de ', highlight: 'Bordado Chino', suffix: ' quieres hacer?', options: [
+    ['🌊', 'Suzhou (Su Xiu) Tradicional'],
+    ['❄️', 'Bordado de Flores y Peonías'],
+    ['🦜', 'Bordado de Aves y Paisajes'],
+    ['🖼️', 'Cuadros Decorativos'],
+    ['🛏️', 'Cojines Personalizados'],
+    ['👘', 'Abanicos y Accesorios'],
+    ['🧻', 'Toallas y Ropa de Cama'],
+    ['🎁', 'Recuerdos y Regalitos'],
+    ['🎨', 'Otros'],
+    ['🤩', 'Todos']] },
+];
+const ALL = 'Todos';
+
+const TESTIMONIALS = [
+  { name: 'Patricia Gómez', handle: '@paty.gomez', profile: 'patricia-profile', photo: 'peony-hoop', alt: 'Peonía rosa bordada en bastidor',
+    text: 'Siempre quise hacer manualidades, pero todo me parecía difícil, hasta que conocí el bordado chino. Además de que es un placer hacerlo, es súper fácil, ¡y las piezas quedan simplemente HERMOSAS! ¡¡¡Me encanta!!!' },
+  { name: 'Valentina Rojas', handle: '@vale.rojas', profile: 'larissa-profile', photo: 'simone-embroidery', alt: 'Cojín de lino con flores rosas bordadas',
+    text: 'Empecé a bordar en seda en mi tiempo libre y se volvió mi momento de paz. En dos meses ya vendí mis primeras piezas a mis amigas. Luana explica de una forma que cualquiera puede entender.' },
+  { name: 'Silvia Fernández', handle: '@silviafernandez', profile: 'simone-profile', photo: 'larissa-embroidery', alt: 'Pájaro colorido y flores bordados en bastidor',
+    text: 'Las piezas con peonías y pájaros bordados en seda son las que más se venden. Aprendí todo con Luana y ahora bordo mientras veo mi serie. Es meditación e ingreso extra en el mismo paquete.' },
+  { name: 'Daniela Muñoz', handle: '@danielamunoz.art', profile: 'debora-profile', photo: 'debora-embroidery', alt: 'Ramo de flores rosas bordado en bastidor',
+    text: 'Nunca había agarrado una aguja en mi vida. Hoy tengo un ingreso extra haciendo cuadros de bordado chino para toda mi ciudad. ¡Me cambió la vida!' },
+];
+const FOOTNOTE = 'Personalizamos tu paquete de acuerdo con tus respuestas.';
+
+let step = 0, answers = {}, styles = [], loadTimer = null, rafStop = null;
+const app = document.getElementById('app');
+const next = () => go(step + 1);
+
+function go(n) {
+  step = n;
+  if (rafStop) { rafStop(); rafStop = null; }
+  clearInterval(loadTimer);
+  render();
+  window.scrollTo({ top: 0, behavior: 'instant' });
+}
+
+function testimonialsHTML() {
+  const cards = [0, 1].map(copy => TESTIMONIALS.map((t, i) => `
+    <article class="testimonial-card"${copy === 1 && i === 0 ? ' data-copy="true"' : ''}${copy === 1 ? ' aria-hidden="true"' : ''}>
+      ${img(t.photo, { cls: 'testimonial-photo', sizes: '310px', alt: t.alt })}
+      <div class="testimonial-body">
+        <span class="stars" aria-label="5 estrellas">★★★★★</span>
+        <div class="reviewer">${img(t.profile, { sizes: '30px', alt: 'Foto de perfil de ' + t.name })}<div><strong>${t.name}</strong><small>${t.handle}</small></div></div>
+        <p>${t.text}</p>
+      </div>
+    </article>`).join('')).join('');
+  return `<section class="testimonials" aria-label="Testimonios"><h2>Las que ya empezaron están encantadas</h2>
+    <div class="testimonial-track" tabindex="0" role="region" aria-label="Testimonios de las alumnas, desplazamiento horizontal">${cards}</div></section>`;
+}
+
+// Auto-scroll do carrossel (mesma lógica do original)
+function startTrack() {
+  const el = app.querySelector('.testimonial-track');
+  if (!el || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  let paused = false, resumeAt = 0, raf = 0, last = 0, pos = el.scrollLeft, visible = false;
+  el.addEventListener('mouseenter', () => paused = true);
+  el.addEventListener('mouseleave', () => paused = false);
+  el.addEventListener('focus', () => paused = true);
+  el.addEventListener('blur', () => paused = false);
+  el.addEventListener('pointerdown', () => resumeAt = performance.now() + 6000);
+  el.addEventListener('wheel', () => resumeAt = performance.now() + 6000);
+  const tick = t => {
+    const dt = last ? Math.min(t - last, 50) : 0; last = t;
+    if (visible && !document.hidden && !paused && t > resumeAt) {
+      const w = el.querySelector('[data-copy="true"]')?.offsetLeft ?? 0;
+      if (w > 0) { pos = (pos + dt * 0.018) % w; el.scrollLeft = pos; }
+    } else pos = el.scrollLeft;
+    raf = visible && !document.hidden ? requestAnimationFrame(tick) : 0;
+  };
+  const sync = () => {
+    if (visible && !document.hidden && !raf) { last = 0; raf = requestAnimationFrame(tick); }
+    else if ((!visible || document.hidden) && raf) { cancelAnimationFrame(raf); raf = 0; }
+  };
+  const io = new IntersectionObserver(([e]) => { visible = e?.isIntersecting ?? false; sync(); });
+  io.observe(el);
+  document.addEventListener('visibilitychange', sync);
+  rafStop = () => { cancelAnimationFrame(raf); io.disconnect(); document.removeEventListener('visibilitychange', sync); };
+}
+
+function landing() {
+  app.innerHTML = `<main class="landing">
+    <h1>EL ARTE MILENARIO<br/>QUE ESTÁ<br/>CONQUISTANDO<br/>EL MUNDO EN 2026:<br/><span class="sage-label">BORDADO CHINO</span></h1>
+    <p class="intro-copy">Descubre una forma <strong>sencilla, relajante y rentable</strong> de empezar a generar <strong class="sage-text">un ingreso extra desde casa</strong> haciendo piezas preciosas de <strong>bordado chino</strong>, aunque nunca hayas hecho nada parecido.</p>
+    ${img('luana-hero', { cls: 'portrait', sizes: '(max-width: 416px) calc(100vw - 36px), (max-width: 600px) 380px, 420px', alt: 'Luana Duarte sosteniendo un bordado chino de flores y un pájaro', eager: true })}
+    <p class="intro-followup">¿Y lo mejor? Yo te enseño el <strong>paso a paso</strong> para que tú también puedas vivir de esto. Sin tener que invertir mucho ni depender de nadie.</p>
+    <p class="intro-prompt">¡Haz clic en el botón de abajo y recibe un plan personalizado para ti!</p>
+    <button class="${btnClass('cta')}" data-next>QUIERO PERSONALIZAR MI PLAN</button>
+    ${testimonialsHTML()}
+    <button class="${btnClass('cta')}" data-next>QUIERO RECIBIR MI PLAN PERSONALIZADO ${ICON.arrowRight}</button>
+    <p class="disclaimer">${DISCLAIMER}</p>
+    <footer class="copyright">${COPYRIGHT}</footer>
+    <button class="${btnClass('cta', 'default', 'float-cta')}" data-next data-float>QUIERO PERSONALIZAR MI PLAN</button>
+  </main>`;
+  startTrack();
+  watchFloat();
+}
+
+// Esconde o botão flutuante enquanto algum CTA da própria página estiver na tela
+function watchFloat() {
+  const float = app.querySelector('[data-float]');
+  const inline = [...app.querySelectorAll('[data-next]:not([data-float])')];
+  const seen = new Set();
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => e.isIntersecting ? seen.add(e.target) : seen.delete(e.target));
+    float.classList.toggle('is-hidden', seen.size > 0);
+  });
+  inline.forEach(b => io.observe(b));
+  const prev = rafStop;
+  rafStop = () => { prev && prev(); io.disconnect(); };
+}
+
+function quiz() {
+  const q = step <= 6 ? QUESTIONS[step - 1] : null;
+  const shellCls = ['quiz-shell', step === 6 && 'styles-screen', step === 7 && 'craft-screen', step === 8 && 'proof-screen'].filter(Boolean).join(' ');
+  let body = '';
+
+  if (q) {
+    const multi = step === 6;
+    const opts = q.options.map(([emoji, label]) => {
+      const pressed = multi ? styles.includes(label) : answers[step] === label;
+      const marker = multi ? (styles.includes(label) ? ICON.check : '') : ICON.chevronRight;
+      return `<button class="${btnClass('quiz')}" aria-pressed="${pressed}" data-opt="${label.replace(/"/g, '&quot;')}">
+        <span class="option-emoji" aria-hidden="true">${emoji}</span><span class="option-label">${label}</span>
+        <span class="option-marker${multi ? ' check-marker' : ''}" aria-hidden="true">${marker}</span></button>`;
+    }).join('');
+    body = `<section class="screen-content">
+      <h1>${q.title}<span class="terracotta-text">${q.highlight}</span>${q.suffix}</h1>
+      ${multi ? '<p class="multi-note">Puedes elegir más de una opción</p>' : ''}
+      <div class="options">${opts}</div>
+      ${multi ? `<button class="${btnClass('cta', 'default', 'float-cta')}" data-next${styles.length ? '' : ' disabled'}>CONTINUAR</button>` : ''}
+      <p class="quiz-footnote">${FOOTNOTE}</p></section>`;
+  } else if (step === 7) {
+    body = `<section class="screen-content">
+      <h1>¿Pero necesito tener experiencia en <span class="terracotta-text">manualidades</span>?</h1>
+      ${img('peony-hands', { cls: 'craft-photo', sizes: '(max-width: 472px) calc(100vw - 36px), 436px', alt: 'Bordado chino de una peonía hecho a mano' })}
+      <h2 class="answer-no">No</h2>
+      <p class="craft-copy">El método que enseño con plantillas es sencillo y rápido. Vas a bordar tus primeras piezas desde la primera semana.</p>
+      <button class="${btnClass('cta')}" data-next>CONTINUAR</button></section>`;
+  } else if (step === 8) {
+    body = `<section class="screen-content">
+      <h1>¡Mira lo que dicen mis alumnas sobre el curso <span class="rust-label">Bordado Chino</span>!</h1>
+      ${img('student-messages', { cls: 'messages-photo', sizes: '(max-width: 600px) 85vw, 422px', alt: 'Mensajes de alumnas sobre sus bordados' })}
+      <button class="${btnClass('cta')}" data-next>¡Quiero aprender!</button></section>`;
+  } else if (step === 9) {
+    body = `<section class="screen-content loading-screen">
+      <h1>¡Estás a pocos pasos de empezar un <span class="terracotta-text">GRAN</span> <span class="sage-label">cambio</span>!</h1>
+      <div class="preparation" aria-live="polite">
+        <div class="progress-caption"><span id="pc-label">Preparando tu curso</span><span id="pc-val">0%</span></div>
+        <progress id="pc-bar" value="0" max="100" aria-label="Preparando tu curso"></progress>
+        <p id="pc-text">Cargando un curso exclusivo para ti</p>
+      </div>
+      <a id="pc-cta" hidden class="${btnClass('cta', 'default', 'cta-pulse')}" href="${withParams('plano.html')}">VER MI PLAN PERSONALIZADO ${ICON.arrowRight}</a>
+    </section>`;
+  }
+
+  app.innerHTML = `<main class="${shellCls}">
+    <div class="quiz-top${step === 1 ? ' no-back' : ''}">
+      ${step > 1 ? `<button class="${btnClass('back', 'icon')}" aria-label="Volver" data-back>${ICON.arrowLeft}</button>` : ''}
+      <progress class="top-progress" value="${step}" max="10" aria-label="Progreso del quiz"></progress>
+    </div>${body}</main>`;
+
+  if (step === 9) {
+    let v = 0;
+    loadTimer = setInterval(() => {
+      v = Math.min(100, v + 2);
+      document.getElementById('pc-val').textContent = v + '%';
+      document.getElementById('pc-bar').value = v;
+      if (v === 100) {
+        clearInterval(loadTimer);
+        document.getElementById('pc-label').textContent = 'Tu curso está listo';
+        document.getElementById('pc-text').textContent = 'Tu plan personalizado está listo para ti';
+        document.getElementById('pc-cta').hidden = false;
+      }
+    }, 70);
+  }
+}
+
+function render() { step === 0 ? landing() : quiz(); }
+
+app.addEventListener('click', e => {
+  const b = e.target.closest('button');
+  if (!b) return;
+  if (b.hasAttribute('data-next')) return next();
+  if (b.hasAttribute('data-back')) return go(step - 1);
+  const opt = b.getAttribute('data-opt');
+  if (opt == null) return;
+  if (step === 6) {
+    const all = QUESTIONS[5].options.map(o => o[1]);
+    if (opt === ALL) styles = styles.length === all.length ? [] : all;
+    else styles = styles.includes(opt) ? styles.filter(s => s !== opt && s !== ALL) : [...styles, opt];
+    // Atualiza só as marcações, sem redesenhar a tela (evita a piscada)
+    app.querySelectorAll('[data-opt]').forEach(el => {
+      const on = styles.includes(el.getAttribute('data-opt'));
+      el.setAttribute('aria-pressed', on);
+      el.querySelector('.option-marker').innerHTML = on ? ICON.check : '';
+    });
+    app.querySelector('.float-cta').disabled = styles.length === 0;
+  } else {
+    answers[step] = opt;
+    next();
+  }
+});
+
+render();
+</script>
+</body>
+</html>

@@ -1,0 +1,30 @@
+/* Botão flutuante (entrada e tela de estilos) */
+.quiz-cta.float-cta {
+  position: fixed;
+  left: 50%;
+  bottom: max(16px, env(safe-area-inset-bottom));
+  transform: translateX(-50%);
+  width: calc(100% - 36px);
+  max-width: 420px;
+  margin: 0;
+  z-index: 50;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, .18);
+  transition: opacity .2s ease, transform .2s ease;
+}
+.quiz-cta.float-cta:disabled {
+  opacity: 1;
+  background: color-mix(in oklch, var(--primary), white 55%);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, .12);
+}
+.quiz-cta.float-cta.is-hidden {
+  opacity: 0;
+  pointer-events: none;
+  transform: translate(-50%, 12px);
+}
+/* Espaço pra o botão não cobrir a última opção */
+.styles-screen .screen-content { padding-bottom: 96px; }
+
+/* Card de preço: o título nunca encolhe, o quadro do preço quebra a linha */
+.price-content h2 { flex-shrink: 0; }
+.price-values { flex: 1 1 auto; }
+.price-values .price-note { font-size: 11.5px; line-height: 1.35; margin-top: 2px; }
