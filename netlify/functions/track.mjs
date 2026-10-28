@@ -13,6 +13,9 @@ export default async (req) => {
   const step = String(body.s || '');
   const vid = String(body.v || '').replace(/[^a-z0-9]/gi, '').slice(0, 24);
   if (!STEPS.has(step) || !vid) return new Response('', { status: 400 });
+  // Robôs e pré-visualização de link não contam
+  if (/bot|crawl|spider|facebookexternalhit|preview|headless/i.test(req.headers.get('user-agent') || '') || req.headers.get('purpose') === 'prefetch')
+    return new Response(null, { status: 204 });
   const src = String(body.src || '').replace(/[^\w.-]/g, '').slice(0, 40) || '-';
   await getStore('funnel').set(`${day()}/${step}/${vid}`, src);
   return new Response(null, { status: 204 });

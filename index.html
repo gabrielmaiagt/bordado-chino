@@ -251,7 +251,12 @@ app.addEventListener('click', e => {
 });
 
 render();
-track('landing');
+// Só conta a entrada quando a página fica visível de verdade
+// (o app do Facebook/Instagram pré-carrega o link do anúncio antes do clique)
+if (document.visibilityState === 'visible') track('landing');
+else document.addEventListener('visibilitychange', function once() {
+  if (document.visibilityState === 'visible') { track('landing'); document.removeEventListener('visibilitychange', once); }
+});
 </script>
 </body>
 </html>
