@@ -15,7 +15,7 @@ export default async (req) => {
   if (!STEPS.has(step) || !vid) return new Response('', { status: 400 });
   const src = String(body.src || '').replace(/[^\w.-]/g, '').slice(0, 40) || '-';
   await getStore('funnel').set(`${day()}/${step}/${vid}`, src);
-  return new Response('', { status: 204 });
+  return new Response(null, { status: 204 });
 };
 
 export const config = { path: '/api/track' };
