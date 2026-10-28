@@ -42,5 +42,17 @@ document.addEventListener("visibilitychange", function(){ if (document.visibilit
 <cakto-upsell-reject upsell-reject-url="https://bordadochino.netlify.app/downsell.html">No, gracias. Prefiero seguir sin esta oferta</cakto-upsell-reject>
 </cakto-upsell-buttons>
 <script type="text/javascript" src="https://caktoscripts.nyc3.cdn.digitaloceanspaces.com/upsell.js"></script><p class="mt-2 text-sm text-muted-foreground">Acceso enviado al mismo correo de tu compra</p></div></section><footer class="mt-12 border-t pt-6 text-center text-sm text-muted-foreground"><p>Pago seguro · Garantía de 7 días · Acceso con el mismo correo de tu compra</p><p class="mt-2 text-xs">Taller que Vende es un material de orientación. Los resultados dependen de tus ventas, precios y costos.</p></footer></main>
+<script>
+// Métricas do funil (/admin)
+function track(step) {
+  try {
+    var v = localStorage.getItem('bc_vid');
+    if (!v) { v = Math.random().toString(36).slice(2) + Date.now().toString(36); localStorage.setItem('bc_vid', v); }
+    navigator.sendBeacon('/api/track', JSON.stringify({ s: step, v: v, src: new URLSearchParams(location.search).get('utm_source') || '' }));
+  } catch (e) {}
+}
+track('upsell');
+document.addEventListener('click', function (e) { if (e.target.closest('cakto-upsell-accept')) track('upsell_click'); }, true);
+</script>
 </body>
 </html>

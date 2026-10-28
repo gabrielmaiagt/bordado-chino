@@ -172,6 +172,12 @@ app.addEventListener('click', e => {
 
 render();
 window.scrollTo({ top: 0 });
+track('oferta');
+// Chegou a ver o card de preço
+new IntersectionObserver((es, o) => { if (es.some(e => e.isIntersecting)) { track('oferta_card'); o.disconnect(); } }, { threshold: .5 })
+  .observe(document.getElementById('meu-plano'));
+// Clique no checkout (o card é re-renderizado, então escuta no documento)
+document.addEventListener('click', e => { if (e.target.closest('a.offer-price-cta, a[href*="cakto.com.br"]')) track('checkout'); }, true);
 </script>
 </body>
 </html>

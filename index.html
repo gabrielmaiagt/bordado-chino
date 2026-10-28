@@ -79,6 +79,7 @@ function go(n) {
   if (rafStop) { rafStop(); rafStop = null; }
   clearInterval(loadTimer);
   render();
+  track(['landing','q1','q2','q3','q4','q5','q6','craft','prova','loading'][step]);
   window.scrollTo({ top: 0, behavior: 'instant' });
 }
 
@@ -250,6 +251,7 @@ app.addEventListener('click', e => {
 });
 
 render();
+track('landing');
 </script>
 </body>
 </html>

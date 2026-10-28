@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1"/>
+<meta name="robots" content="noindex, nofollow"/>
+<title>Admin do Funil</title>
+<style>
+:root { --bg:#f7f3ee; --card:#fff; --ink:#2b2220; --muted:#7a6d68; --line:#eadfd6; --brand:#b4532a; --bar:#e9b9a2; --bad:#c0392b; }
+@media (prefers-color-scheme: dark) { :root { --bg:#191514; --card:#231e1c; --ink:#f3ebe6; --muted:#a8998f; --line:#3a312d; --brand:#e58a5f; --bar:#7a3f26; --bad:#ff7b6b; } }
+* { box-sizing: border-box; }
+body { margin:0; background:var(--bg); color:var(--ink); font:15px/1.45 system-ui,-apple-system,Segoe UI,Roboto,sans-serif; }
+main { max-width:760px; margin:0 auto; padding:24px 16px 48px; }
+h1 { font-size:22px; margin:0 0 4px; }
+.sub { color:var(--muted); margin:0 0 20px; font-size:13px; }
+.card { background:var(--card); border:1px solid var(--line); border-radius:14px; padding:16px; }
+.login { max-width:340px; margin:15vh auto 0; display:grid; gap:10px; }
+input, select, button { font:inherit; padding:10px 12px; border-radius:10px; border:1px solid var(--line); background:var(--card); color:var(--ink); }
+button { background:var(--brand); color:#fff; border:0; font-weight:600; cursor:pointer; }
+.err { color:var(--bad); font-size:13px; min-height:1em; }
+.bar-row { display:flex; gap:10px; align-items:center; margin-bottom:16px; flex-wrap:wrap; }
+.kpis { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; margin-bottom:16px; }
+.kpi { background:var(--card); border:1px solid var(--line); border-radius:12px; padding:12px; }
+.kpi b { display:block; font-size:22px; }
+.kpi span { color:var(--muted); font-size:12px; }
+table { width:100%; border-collapse:collapse; font-variant-numeric:tabular-nums; }
+th, td { padding:9px 6px; border-bottom:1px solid var(--line); text-align:right; white-space:nowrap; }
+th:first-child, td:first-child { text-align:left; white-space:normal; }
+th { color:var(--muted); font-weight:600; font-size:12px; }
+.bar { position:relative; }
+.bar i { position:absolute; inset:4px auto 4px 0; background:var(--bar); border-radius:4px; z-index:0; opacity:.55; }
+.bar span { position:relative; z-index:1; }
+.drop { color:var(--bad); font-weight:600; }
+.sep td { color:var(--muted); font-size:12px; text-align:left; padding-top:16px; border:0; }
+@media (max-width:520px) { .kpis { grid-template-columns:1fr 1fr; } th, td { padding:8px 4px; font-size:13px; } }
+</style>
+</head>
+<body>
+<main id="app"></main>
+<script>
+const STEPS = [
+  ['landing', 'Entrada (landing)'], ['q1', 'Pergunta 1'], ['q2', 'Pergunta 2'], ['q3', 'Pergunta 3'],
+  ['q4', 'Pergunta 4'], ['q5', 'Pergunta 5'], ['q6', 'Pergunta 6 (estilos)'], ['craft', 'Tela do bordado'],
+  ['prova', 'Tela de prova'], ['loading', 'Carregando plano'], ['oferta', 'Página de oferta'],
+  ['oferta_card', 'Viu o card de preço'], ['checkout', 'Clicou no checkout'],
+];
+const POST = [['upsell', 'Abriu o upsell'], ['upsell_click', 'Aceitou o upsell'], ['downsell', 'Abriu o downsell'], ['downsell_click', 'Aceitou o downsell']];
+const app = document.getElementById('app');
+let key = sessionStorage.getItem('admin_key') || '', data = null, sel = 'today';
+
+const fmtDay = d => d.split('-').reverse().slice(0, 2).join('/');
+const pct = (a, b) => b ? Math.round(a / b * 100) + '%' : '–';
+
+function login(msg = '') {
+  app.innerHTML = `<form class="card login"><h1>Admin do funil</h1>
+    <input type="password" placeholder="Senha" autocomplete="current-password" required/>
+    <button>Entrar</button><p class="err">${msg}</p></form>`;
+  app.querySelector('form').onsubmit = e => { e.preventDefault(); key = e.target[0].value; load(); };
+}
+
+async function load() {
+  const r = await fetch('/api/stats?days=14', { headers: { 'x-admin-key': key } });
+  if (r.status === 401) { sessionStorage.removeItem('admin_key'); return login(key ? 'Senha errada.' : ''); }
+  if (!r.ok) return login('Erro ao carregar (' + r.status + ').');
+  sessionStorage.setItem('admin_key', key);
+  data = await r.json();
+  render();
+}
+
+function counts() {
+  const days = Object.keys(data).sort().reverse();
+  const pick = sel === 'today' ? days.slice(0, 1) : sel === 'yesterday' ? days.slice(1, 2) : days.slice(0, Number(sel));
+  const c = {};
+  pick.forEach(d => Object.entries(data[d]).forEach(([k, v]) => c[k] = (c[k] || 0) + v));
+  return c;
+}
+
+function rows(list, c, base) {
+  const top = Math.max(1, ...list.map(([k]) => c[k] || 0));
+  return list.map(([k, label], i) => {
+    const n = c[k] || 0, prev = i ? (c[list[i - 1][0]] || 0) : null;
+    const lost = prev ? Math.round((1 - n / prev) * 100) : null;
+    return `<tr><td>${label}</td>
+      <td class="bar"><i style="width:${n / top * 100}%"></i><span>${n}</span></td>
+      <td>${pct(n, c[base])}</td>
+      <td class="${lost >= 25 ? 'drop' : ''}">${lost === null || !prev ? '–' : (lost > 0 ? '−' + lost + '%' : '0%')}</td></tr>`;
+  }).join('');
+}
+
+function render() {
+  const c = counts();
+  const days = Object.keys(data).sort().reverse();
+  app.innerHTML = `<h1>Funil do Bordado Chino</h1>
+    <p class="sub">Pessoas únicas por etapa · horário de Brasília</p>
+    <div class="bar-row">
+      <select id="sel">
+        <option value="today">Hoje (${fmtDay(days[0])})</option>
+        <option value="yesterday">Ontem (${fmtDay(days[1])})</option>
+        <option value="3">Últimos 3 dias</option>
+        <option value="7">Últimos 7 dias</option>
+        <option value="14">Últimos 14 dias</option>
+      </select>
+      <button id="reload">Atualizar</button>
+    </div>
+    <div class="kpis">
+      <div class="kpi"><span>Entraram</span><b>${c.landing || 0}</b></div>
+      <div class="kpi"><span>Chegaram na oferta</span><b>${pct(c.oferta || 0, c.landing)}</b></div>
+      <div class="kpi"><span>Oferta → checkout</span><b>${pct(c.checkout || 0, c.oferta)}</b></div>
+    </div>
+    <div class="card"><table>
+      <thead><tr><th>Etapa</th><th>Pessoas</th><th>% da entrada</th><th>Perdeu</th></tr></thead>
+      <tbody>${rows(STEPS, c, 'landing')}
+        <tr class="sep"><td colspan="4">Depois da compra</td></tr>
+        ${rows(POST, c, 'upsell')}</tbody>
+    </table></div>`;
+  const s = app.querySelector('#sel'); s.value = sel;
+  s.onchange = () => { sel = s.value; render(); };
+  app.querySelector('#reload').onclick = load;
+}
+
+key ? load() : login();
+</script>
+</body>
+</html>

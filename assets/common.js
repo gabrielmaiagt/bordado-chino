@@ -67,3 +67,13 @@ function withParams(url) {
 
 const DISCLAIMER = 'Los resultados pueden variar según la dedicación, experiencia, disponibilidad y aplicación de cada persona. Este contenido no representa una garantía de ingresos.';
 const COPYRIGHT = '© 2026 Luana Duarte · Bordados que conectan y abrazan';
+
+// ====== MÉTRICAS DO FUNIL (/admin) ======
+function track(step) {
+  try {
+    let v = localStorage.getItem('bc_vid');
+    if (!v) { v = Math.random().toString(36).slice(2) + Date.now().toString(36); localStorage.setItem('bc_vid', v); }
+    const src = new URLSearchParams(location.search).get('utm_source') || '';
+    navigator.sendBeacon('/api/track', JSON.stringify({ s: step, v, src }));
+  } catch (e) {}
+}
