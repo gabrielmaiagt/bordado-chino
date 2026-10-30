@@ -127,35 +127,24 @@ function startTrack() {
 }
 
 function landing() {
-  app.innerHTML = `<main class="landing">
-    <h1>EL ARTE MILENARIO<br/>QUE ESTÁ<br/>CONQUISTANDO<br/>EL MUNDO EN 2026:<br/><span class="sage-label">BORDADO CHINO</span></h1>
-    <p class="intro-copy">Descubre una forma <strong>sencilla, relajante y rentable</strong> de empezar a generar <strong class="sage-text">un ingreso extra desde casa</strong> haciendo piezas preciosas de <strong>bordado chino</strong>, aunque nunca hayas hecho nada parecido.</p>
-    ${img('luana-hero', { cls: 'portrait', sizes: '(max-width: 416px) calc(100vw - 36px), (max-width: 600px) 380px, 420px', alt: 'Luana Duarte sosteniendo un bordado chino de flores y un pájaro', eager: true })}
-    <p class="intro-followup">¿Y lo mejor? Yo te enseño el <strong>paso a paso</strong> para que tú también puedas vivir de esto. Sin tener que invertir mucho ni depender de nadie.</p>
-    <p class="intro-prompt">¡Haz clic en el botón de abajo y recibe un plan personalizado para ti!</p>
-    <button class="${btnClass('cta')}" data-next>QUIERO PERSONALIZAR MI PLAN</button>
+  // A pergunta 1 já fica na entrada: tocar numa opção começa o quiz
+  const q = QUESTIONS[0];
+  const opts = q.options.map(([emoji, label]) => `<button class="${btnClass('quiz')}" data-opt="${label}">
+      <span class="option-emoji" aria-hidden="true">${emoji}</span><span class="option-label">${label}</span>
+      <span class="option-marker" aria-hidden="true">${ICON.chevronRight}</span></button>`).join('');
+  app.innerHTML = `<main class="landing landing-quiz">
+    <h1>Aprende a crear <span class="sage-text">piezas únicas</span> de bordado chino para vender por encargo</h1>
+    <p class="intro-copy">Aunque nunca hayas bordado. Responde y recibe tu plan personalizado.</p>
+    <p class="intro-question">¿Cuál es tu nivel de experiencia con el <span class="terracotta-text">Bordado</span>?</p>
+    <div class="options">${opts}</div>
+    ${img('luana-hero', { cls: 'portrait', sizes: '(max-width: 416px) calc(100vw - 36px), (max-width: 600px) 380px, 420px', alt: 'Luana Duarte sosteniendo un bordado chino de flores y un pájaro' })}
+    <p class="intro-followup">Yo te enseño el <strong>paso a paso</strong>: los puntos, los colores y el orden exacto para tus primeras piezas.</p>
     ${testimonialsHTML()}
     <button class="${btnClass('cta')}" data-next>QUIERO RECIBIR MI PLAN PERSONALIZADO ${ICON.arrowRight}</button>
     <p class="disclaimer">${DISCLAIMER}</p>
     <footer class="copyright">${COPYRIGHT}</footer>
-    <button class="${btnClass('cta', 'default', 'float-cta')}" data-next data-float>QUIERO PERSONALIZAR MI PLAN</button>
   </main>`;
   startTrack();
-  watchFloat();
-}
-
-// Esconde o botão flutuante enquanto algum CTA da própria página estiver na tela
-function watchFloat() {
-  const float = app.querySelector('[data-float]');
-  const inline = [...app.querySelectorAll('[data-next]:not([data-float])')];
-  const seen = new Set();
-  const io = new IntersectionObserver(entries => {
-    entries.forEach(e => e.isIntersecting ? seen.add(e.target) : seen.delete(e.target));
-    float.classList.toggle('is-hidden', seen.size > 0);
-  });
-  inline.forEach(b => io.observe(b));
-  const prev = rafStop;
-  rafStop = () => { prev && prev(); io.disconnect(); };
 }
 
 function quiz() {
@@ -244,6 +233,11 @@ app.addEventListener('click', e => {
       el.querySelector('.option-marker').innerHTML = on ? ICON.check : '';
     });
     app.querySelector('.float-cta').disabled = styles.length === 0;
+  } else if (step === 0) {
+    // Resposta da pergunta 1 dada na entrada: conta q1 e pula direto pra pergunta 2
+    answers[1] = opt;
+    track('q1');
+    go(2);
   } else {
     answers[step] = opt;
     next();

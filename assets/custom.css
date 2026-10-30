@@ -28,3 +28,10 @@
 .price-content h2 { flex-shrink: 0; }
 .price-values { flex: 1 1 auto; }
 .price-values .price-note { font-size: 11.5px; line-height: 1.35; margin-top: 2px; }
+
+/* Entrada com a pergunta 1 já na primeira tela */
+.landing.landing-quiz { padding-top: 28px; }
+.landing-quiz h1 { font-size: 30px; line-height: 1.12; margin-bottom: 12px; }
+.landing-quiz .intro-copy { margin: 0 0 18px; }
+.landing-quiz .intro-question { font-weight: 700; font-size: 19px; line-height: 1.25; margin: 0 0 12px; }
+.landing-quiz .options { text-align: left; margin-bottom: 28px; }
