@@ -62,6 +62,41 @@ const REVIEWS = [
   { name: 'Tatiana Acosta Ríos', photo: 'tatiane-profile', text: 'Lo que más me gustó fue lo claras que son las clases. Puedes ver los detalles, pausar y repetir con calma. ¡Las plantillas dejan todo organizado y te ayudan a ganar confianza para probar piezas nuevas!' },
 ];
 
+// Plano personalizado a partir das respostas do quiz (salvas no index.html)
+let ANS = {};
+try { ANS = JSON.parse(sessionStorage.getItem('bc_answers')) || {}; } catch {}
+
+function planItems() {
+  const items = [];
+  const level = ANS[1] || '';
+  items.push(level.startsWith('Nunca')
+    ? ['Tu punto de partida', 'Empiezas desde cero: primero los puntos básicos y una pieza sencilla para agarrar confianza.']
+    : ['Tu punto de partida', 'Ya tienes base: vas directo a las técnicas que hacen que una pieza se vea profesional.']);
+  const time = ANS[3] || '';
+  items.push(['Tu ritmo', time.startsWith('30')
+    ? 'Con 30 minutos a 1 hora al día, avanzas con piezas chiquitas que terminas en pocas sesiones.'
+    : time.startsWith('2') ? 'Con 2 a 4 horas, puedes terminar una pieza completa en un fin de semana.'
+    : 'Con bastante tiempo libre, puedes avanzar rápido y pasar a piezas más grandes.']);
+  const goal = (ANS[4] || '') + ' ' + (ANS[5] || '');
+  items.push(['Tu enfoque', /vender|ingreso|gastos|negocio|ganar/i.test(goal)
+    ? 'Piezas que la gente pide por encargo: cuadros, cojines y regalos personalizados.'
+    : 'Piezas para relajarte, decorar tu casa y regalar a quien quieres.']);
+  const st = (ANS.styles || []).filter(x => x !== 'Todos' && x !== 'Otros');
+  if (st.length) items.push(['Tus primeros diseños', st.slice(0, 3).join(', ') + '.']);
+  return items;
+}
+
+const METHOD = [
+  ['Eliges tu diseño y lo pasas a la tela', 'Cada pieza trae su plantilla lista para imprimir y calcar. No tienes que saber dibujar.'],
+  ['Sigues el mapa de colores', 'La plantilla te dice qué hilo y qué puntada va en cada parte. Así el degradado sale solo, sin adivinar.'],
+  ['Bordas junto con la videoclase', 'Luana borda la misma pieza en el video. Pausas, repites y vas haciendo igual, punto por punto.'],
+];
+const ACCESS = [
+  'Pagas con tarjeta o con el medio de pago de tu país.',
+  'En unos minutos te llega a tu correo el acceso al curso.',
+  'Entras desde el celular o la computadora y empiezas hoy mismo.',
+];
+
 let gi = 0, faqOpen = 0;
 const app = document.getElementById('app');
 const checkout = () => withParams(window.CHECKOUT_URL);
@@ -75,9 +110,23 @@ function render() {
   </div>
 
   <header class="offer-congratulations">
-    <h1>¡Felicidades!</h1>
-    <p>Fuiste seleccionada para participar en el curso<br/><strong>BORDADO CHINO</strong></p>
+    <h1>Tu plan está listo</h1>
+    <p>Lo armamos con tus respuestas</p>
   </header>
+
+  <section class="offer-section offer-plan">
+    ${planItems().map(([t, d]) => `<div class="plan-item">${ICON.check}<div><strong>${t}</strong><p>${d}</p></div></div>`).join('')}
+  </section>
+
+  <section class="offer-section offer-steps">
+    <h2>Cómo funciona el <span class="terracotta-text">método</span></h2>
+    <ol>${METHOD.map(([t, d]) => `<li><strong>${t}</strong><p>${d}</p></li>`).join('')}</ol>
+  </section>
+
+  <section class="offer-section offer-steps">
+    <h2>Cómo recibes tu <span class="terracotta-text">acceso</span></h2>
+    <ol>${ACCESS.map(t => `<li><p>${t}</p></li>`).join('')}</ol>
+  </section>
 
   <section class="offer-section offer-inclusions">
     <h2>Mira todo lo que vas a recibir en el curso <span class="terracotta-text">Bordado Chino</span></h2>
@@ -177,7 +226,16 @@ track('oferta');
 new IntersectionObserver((es, o) => { if (es.some(e => e.isIntersecting)) { track('oferta_card'); o.disconnect(); } }, { threshold: .5 })
   .observe(document.getElementById('meu-plano'));
 // Clique no checkout (o card é re-renderizado, então escuta no documento)
-document.addEventListener('click', e => { if (e.target.closest('a.offer-price-cta, a[href*="cakto.com.br"]')) track('checkout'); }, true);
+document.addEventListener('click', e => { if (e.target.closest('a.offer-price-cta, a[href*="cakto.com.br"]')) { track('checkout'); sessionStorage.setItem('bc_checkout', '1'); } }, true);
+
+// ====== BACK REDIRECT ======
+// Voltar na oferta (ou voltar do checkout pra cá) cai na oferta especial
+const BACK_URL = withParams('oferta-especial.html');
+history.pushState({ trap: 1 }, '');
+addEventListener('popstate', () => location.replace(BACK_URL));
+addEventListener('pageshow', () => {
+  if (sessionStorage.getItem('bc_checkout')) { sessionStorage.removeItem('bc_checkout'); location.replace(BACK_URL); }
+});
 </script>
 </body>
 </html>
