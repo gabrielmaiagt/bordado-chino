@@ -12,7 +12,8 @@ export default async (req) => {
   try { body = JSON.parse(await req.text()); } catch { return new Response('', { status: 400 }); }
   const step = String(body.s || '');
   const vid = String(body.v || '').replace(/[^a-z0-9]/gi, '').slice(0, 24);
-  if (!STEPS.has(step) || !vid) return new Response('', { status: 400 });
+  // Respostas do quiz: q<pergunta>a<opção>, ex. q1a2 = pergunta 1, terceira opção
+  if (!(STEPS.has(step) || /^q[1-6]a\d{1,2}$/.test(step)) || !vid) return new Response('', { status: 400 });
   // Robôs e pré-visualização de link não contam
   if (/bot|crawl|spider|facebookexternalhit|preview|headless/i.test(req.headers.get('user-agent') || '') || req.headers.get('purpose') === 'prefetch')
     return new Response(null, { status: 204 });

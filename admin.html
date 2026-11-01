@@ -45,6 +45,15 @@ const STEPS = [
   ['oferta_card', 'Viu o card de preço'], ['checkout', 'Clicou no checkout'],
 ];
 const POST = [['upsell', 'Abriu o upsell'], ['upsell_click', 'Aceitou o upsell'], ['downsell', 'Abriu o downsell'], ['downsell_click', 'Aceitou o downsell']];
+// Opções de cada pergunta, na mesma ordem do index.html
+const ANSWERS = [
+  ['Pergunta 1 · experiência', ['Já faço peças, quero melhorar', 'Sei fazer peças simples', 'Nunca fiz, quero começar']],
+  ['Pergunta 2 · primeiro curso?', ['Nunca fiz curso', 'Já fiz outro curso', 'Já fiz vários cursos']],
+  ['Pergunta 3 · tempo disponível', ['30 min – 1 h', '2 – 4 h', 'Bastante tempo livre']],
+  ['Pergunta 4 · o que quer', ['Trabalhar de casa / renda extra', 'Liberdade de tempo', 'Ajudar nas contas de casa', 'Paz e relaxar']],
+  ['Pergunta 5 · meta', ['Aprender a vender e ganhar mais', 'Só passatempo', 'Melhorar meu negócio']],
+  ['Pergunta 6 · estilos (várias)', ['Suzhou tradicional', 'Flores e peônias', 'Aves e paisagens', 'Quadros decorativos', 'Almofadas', 'Leques e acessórios', 'Toalhas e cama', 'Lembrancinhas', 'Outros', 'Todos']],
+];
 const app = document.getElementById('app');
 let key = sessionStorage.getItem('admin_key') || '', data = null, sel = 'today';
 
@@ -87,6 +96,16 @@ function rows(list, c, base) {
   }).join('');
 }
 
+function answersHTML(c) {
+  return ANSWERS.map(([title, opts], qi) => {
+    const n = opts.map((_, i) => c[`q${qi + 1}a${i}`] || 0);
+    const total = n.reduce((a, b) => a + b, 0);
+    const top = Math.max(1, ...n);
+    return `<tr class="sep"><td colspan="4">${title} · ${total} respostas</td></tr>` + opts.map((label, i) =>
+      `<tr><td>${label}</td><td class="bar"><i style="width:${n[i] / top * 100}%"></i><span>${n[i]}</span></td><td>${pct(n[i], total)}</td><td></td></tr>`).join('');
+  }).join('');
+}
+
 function render() {
   const c = counts();
   const days = Object.keys(data).sort().reverse();
@@ -112,6 +131,11 @@ function render() {
       <tbody>${rows(STEPS, c, 'landing')}
         <tr class="sep"><td colspan="4">Depois da compra</td></tr>
         ${rows(POST, c, 'upsell')}</tbody>
+    </table></div>
+    <h2 style="font-size:17px;margin:24px 0 8px">Respostas do quiz</h2>
+    <div class="card"><table>
+      <thead><tr><th>Opção</th><th>Pessoas</th><th>% da pergunta</th><th></th></tr></thead>
+      <tbody>${answersHTML(c)}</tbody>
     </table></div>`;
   const s = app.querySelector('#sel'); s.value = sel;
   s.onchange = () => { sel = s.value; render(); };
