@@ -213,8 +213,11 @@ document.addEventListener('click', e => { if (e.target.closest('a.offer-price-ct
 const BACK_URL = withParams('oferta-especial.html');
 history.pushState({ trap: 1 }, '');
 addEventListener('popstate', () => location.replace(BACK_URL));
-addEventListener('pageshow', () => {
-  if (sessionStorage.getItem('bc_checkout')) { sessionStorage.removeItem('bc_checkout'); location.replace(BACK_URL); }
+addEventListener('pageshow', e => {
+  const voltou = e.persisted || performance.getEntriesByType('navigation')[0]?.type === 'back_forward';
+  const foi = sessionStorage.getItem('bc_checkout');
+  sessionStorage.removeItem('bc_checkout');
+  if (voltou && foi) location.replace(BACK_URL);
 });
 </script>
 </body>
