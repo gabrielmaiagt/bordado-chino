@@ -1,8 +1,8 @@
 // Cache do app para abrir rápido e funcionar offline (os vídeos precisam de internet).
 // Ao mudar qualquer arquivo, suba a versão para os alunos receberem a atualização.
-const VERSION = 'bc-v1';
+const VERSION = 'bc-v2';
 const SHELL = [
-  './', 'index.html', 'manifest.webmanifest', 'assets/app.css', 'js/content.js', 'js/app.js',
+  './', 'index.html', 'manifest.webmanifest', 'assets/app.css', 'js/content.js', 'js/extras.js', 'js/app.js',
   'assets/dm-sans-latin-standard-normal-Bf69Tn_J.woff2', 'assets/dm-serif-display-latin-400-normal-C5_t9oOD.woff2',
   'icons/icon-192.png', 'img/luana-avatar-320.webp',
   'patrones/01-peonia.svg', 'patrones/02-rosa-y-capullos.svg', 'patrones/03-ejercicio-direccion-del-hilo.svg',

@@ -114,3 +114,11 @@ img{max-width:100%;display:block}
 .tabbar a span{font-size:20px;line-height:1.2;filter:grayscale(1);opacity:.7}
 .tabbar a.active{color:var(--primary)}
 .tabbar a.active span{filter:none;opacity:1}
+
+/* 30 paletas */
+.palettes { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
+.palette { background: #fff; border: 1px solid rgba(0,0,0,.08); border-radius: 12px; padding: 10px; }
+.palette .swatches { display: flex; height: 44px; border-radius: 8px; overflow: hidden; margin-bottom: 8px; }
+.palette .swatches span { flex: 1; }
+.palette strong { display: block; font-size: 14px; }
+.palette small { display: block; font-size: 12px; opacity: .7; }

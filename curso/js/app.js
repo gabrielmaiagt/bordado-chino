@@ -6,7 +6,7 @@ const store = {
 let done = new Set(store.get('bc_done', []));
 const saveDone = () => store.set('bc_done', [...done]);
 
-const ALL_SECTIONS = [...COURSE, ...BONUSES];
+const ALL_SECTIONS = [...COURSE, ...EXTRAS, ...BONUSES];
 const LESSONS = ALL_SECTIONS.flatMap(s => s.lessons.map(l => ({ ...l, section: s })));
 const COURSE_LESSONS = LESSONS.filter(l => COURSE.includes(l.section));
 const findLesson = id => LESSONS.find(l => l.id === id);
@@ -21,12 +21,12 @@ function progressBar(p) {
   return `<div class="bar" role="progressbar" aria-valuenow="${p}" aria-valuemin="0" aria-valuemax="100"><span style="width:${p}%"></span></div>`;
 }
 
-function sectionCard(s, i, isBonus) {
+function sectionCard(s, i, isBonus, label) {
   const p = pct(s.lessons);
   return `<a class="card section-card" href="#/s/${s.id}">
     <span class="section-icon" aria-hidden="true">${s.icon}</span>
     <span class="section-text">
-      <small>${isBonus ? `Bono ${i + 1}` : (i === 0 ? 'Empieza aquí' : `Módulo ${i}`)} · ${s.lessons.length} ${s.lessons.length === 1 ? 'lección' : 'lecciones'}</small>
+      <small>${label || (isBonus ? `Bono ${i + 1}` : (i === 0 ? 'Empieza aquí' : `Módulo ${i}`))} · ${s.lessons.length} ${s.lessons.length === 1 ? 'lección' : 'lecciones'}</small>
       <strong>${s.title}</strong>
       <span class="muted">${s.subtitle}</span>
       ${progressBar(p)}
@@ -65,6 +65,8 @@ function home() {
   </section>
   <h2 class="list-title">Módulos del curso</h2>
   <div class="list">${COURSE.map((s, i) => sectionCard(s, i)).join('')}</div>
+  <h2 class="list-title">Materiales extra</h2>
+  <div class="list">${EXTRAS.map((s, i) => sectionCard(s, i, false, 'Extra')).join('')}</div>
   <a class="card promo" href="#/bonos">🎁 <span><strong>Tus 5 bonos</strong><br/><span class="muted">Aprende a vender tus piezas</span></span><span class="chev">›</span></a>
   <a class="card promo" href="#/patrones">📐 <span><strong>Plantillas para imprimir</strong><br/><span class="muted">${PATTERNS.length} patrones listos para bordar</span></span><span class="chev">›</span></a>`;
 }
@@ -172,6 +174,48 @@ function mountPriceCalc() {
   calc();
 }
 
+// ====== Calculadoras do Taller que Vende ======
+function mountCalc(id, fields, compute) {
+  const el = document.getElementById(id);
+  if (!el) return;
+  const saved = store.get('bc_' + id, {});
+  el.innerHTML = `<div class="calc">${fields.map(([k, label, ph]) =>
+    `<label>${label}<input inputmode="decimal" data-k="${k}" value="${saved[k] ?? ''}" placeholder="${ph}"/></label>`).join('')}
+    <output id="${id}-out"></output></div>`;
+  const run = () => {
+    const v = {}; el.querySelectorAll('input').forEach(i => v[i.dataset.k] = i.value);
+    store.set('bc_' + id, v);
+    const n = k => parseFloat(String(v[k] || '').replace(',', '.')) || 0;
+    document.getElementById(id + '-out').innerHTML = compute(n);
+  };
+  el.addEventListener('input', run);
+  run();
+}
+const money = x => x.toLocaleString('es', { maximumFractionDigits: 2 });
+
+function mountTallerCalcs() {
+  mountCalc('fair-calc', [
+    ['mat', 'Materiales (tela, hilos, bastidor)', 'Ej: 8'],
+    ['pack', 'Empaque y tarjeta', 'Ej: 2'],
+    ['hrs', 'Horas de trabajo', 'Ej: 10'],
+    ['rate', 'Valor de tu hora', 'Ej: 3'],
+    ['fee', 'Comisión de la plataforma o envío (%)', 'Ej: 10'],
+    ['profit', 'Ganancia extra que quieres (%)', 'Ej: 20'],
+  ], n => {
+    const cost = n('mat') + n('pack') + n('hrs') * n('rate');
+    const price = cost * (1 + n('profit') / 100) / Math.max(0.01, 1 - n('fee') / 100);
+    return cost ? `Tu costo real: <strong>${money(cost)}</strong><br/>Precio justo: <strong>${money(price)}</strong>` : 'Llena los campos para ver tu precio.';
+  });
+  mountCalc('income-calc', [
+    ['price', 'Precio de cada pieza', 'Ej: 40'],
+    ['cost', 'Costo de materiales y empaque por pieza', 'Ej: 10'],
+    ['pieces', 'Piezas que puedes hacer al mes', 'Ej: 6'],
+  ], n => {
+    const gross = n('price') * n('pieces'), net = (n('price') - n('cost')) * n('pieces');
+    return gross ? `Vendes al mes: <strong>${money(gross)}</strong><br/>Te queda (sin materiales): <strong>${money(net)}</strong>` : 'Llena los campos para ver tu simulación.';
+  });
+}
+
 // ====== Router ======
 const TABS = { '': 'inicio', s: 'inicio', l: 'inicio', patrones: 'patrones', p: 'patrones', bonos: 'bonos', progreso: 'progreso' };
 function route() {
@@ -190,6 +234,7 @@ function route() {
   const tab = sec && BONUSES.includes(sec) ? 'bonos' : TABS[a];
   document.querySelectorAll('.tabbar a').forEach(t => t.classList.toggle('active', t.dataset.tab === tab));
   mountPriceCalc();
+  mountTallerCalcs();
   window.scrollTo(0, 0);
 }
 
