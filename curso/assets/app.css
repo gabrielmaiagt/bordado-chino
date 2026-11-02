@@ -122,3 +122,9 @@ img{max-width:100%;display:block}
 .palette .swatches span { flex: 1; }
 .palette strong { display: block; font-size: 14px; }
 .palette small { display: block; font-size: 12px; opacity: .7; }
+
+/* Láminas de plantillas */
+.laminas { display: grid; grid-template-columns: repeat(auto-fill, minmax(140px, 1fr)); gap: 10px; }
+.lamina { display: block; background: #fff; border: 1px solid rgba(0,0,0,.08); border-radius: 10px; overflow: hidden; text-decoration: none; color: inherit; }
+.lamina img { display: block; width: 100%; aspect-ratio: 3 / 4; object-fit: cover; object-position: top; }
+.lamina span { display: block; padding: 6px 8px; font-size: 12px; font-weight: 600; }

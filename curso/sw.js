@@ -1,6 +1,6 @@
 // Cache do app para abrir rápido e funcionar offline (os vídeos precisam de internet).
 // Ao mudar qualquer arquivo, suba a versão para os alunos receberem a atualização.
-const VERSION = 'bc-v2';
+const VERSION = 'bc-v3';
 const SHELL = [
   './', 'index.html', 'manifest.webmanifest', 'assets/app.css', 'js/content.js', 'js/extras.js', 'js/app.js',
   'assets/dm-sans-latin-standard-normal-Bf69Tn_J.woff2', 'assets/dm-serif-display-latin-400-normal-C5_t9oOD.woff2',

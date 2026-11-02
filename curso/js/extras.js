@@ -40,6 +40,13 @@ const palettesHTML = () => `<div class="palettes">${PALETTES.map(([name, use, to
   <strong>${i + 1}. ${name}</strong><small>${use}</small>
 </div>`).join('')}</div>`;
 
+
+// Láminas de domínio público (livros de moldes de 1850 e 1875, Sterling and Francine Clark Art Institute Library, via Internet Archive)
+const LAMINAS_GRANDES = ['b_8.webp', 'b_20.webp', 'b_22.webp', 'b_26.webp', 'b_28.webp', 'b_30.webp', 'b_32.webp', 'b_34.webp', 'b_36.webp', 'b_38.webp', 'b_40.webp', 'b_42.webp', 'b_44.webp', 'b_46.webp', 'b_48.webp', 'b_50.webp', 'b_52.webp', 'b_54.webp', 'b_56.webp', 'b_60.webp', 'b_62.webp', 'b_64.webp', 'b_66.webp', 'b_70.webp', 'b_72.webp', 'b_74.webp', 'b_76.webp', 'b_78.webp', 'b_80.webp', 'b_82.webp', 'b_84.webp', 'b_86.webp', 'b_88.webp', 'b_92.webp', 'b_94.webp', 'b_98.webp', 'b_100.webp', 'b_104.webp', 'b_106.webp', 'b_108.webp', 'b_110.webp', 'b_114.webp', 'b_118.webp', 'b_136.webp', 'b_138.webp', 'b_140.webp', 'b_142.webp', 'b_144.webp', 'b_146.webp', 'b_148.webp', 'b_150.webp', 'b_152.webp', 'b_154.webp'];
+const LAMINAS_MOTIVOS = ['a_4.webp', 'a_6.webp', 'a_8.webp', 'a_218.webp', 'a_219.webp', 'a_220.webp', 'a_221.webp', 'a_222.webp', 'a_223.webp', 'a_224.webp', 'a_225.webp', 'a_226.webp', 'a_227.webp', 'a_228.webp', 'a_229.webp', 'a_230.webp', 'a_231.webp', 'a_232.webp', 'a_233.webp', 'a_234.webp', 'a_235.webp', 'a_236.webp', 'a_237.webp', 'a_238.webp', 'a_239.webp', 'a_240.webp', 'a_241.webp', 'a_242.webp', 'a_243.webp', 'a_244.webp', 'a_245.webp', 'a_246.webp', 'a_247.webp', 'a_248.webp', 'a_249.webp', 'a_250.webp', 'a_251.webp', 'a_252.webp', 'a_253.webp', 'a_254.webp', 'a_255.webp', 'a_256.webp', 'a_257.webp', 'a_258.webp'];
+const laminasHTML = list => `<div class="laminas">${list.map((f, i) => `
+<a class="lamina" href="laminas/${f}" target="_blank" rel="noopener"><img src="laminas/${f}" alt="Lámina ${i + 1}" loading="lazy"/><span>Lámina ${i + 1}</span></a>`).join('')}</div>`;
+
 const EXTRAS = [
   {
     id: 'x1', icon: '🩹', title: 'Guía de Errores y Correcciones', subtitle: 'Los errores más comunes y cómo arreglar cada uno',
@@ -92,6 +99,34 @@ const EXTRAS = [
         id: 'x2-2', title: 'Las 30 paletas', min: 6, videos: [],
         body: palettesHTML(),
         practice: 'Elige 3 paletas para tus próximas piezas y compra los hilos de una de ellas.',
+      },
+    ],
+  },
+  {
+    id: 'x4', icon: '📐', title: '+300 Plantillas Listas', subtitle: 'Diseños clásicos para imprimir y bordar',
+    lessons: [
+      {
+        id: 'x4-1', title: 'Cómo usar las láminas', min: 4, videos: [],
+        body: `
+<p>Aquí tienes <strong>láminas con más de 300 diseños</strong> de bordado: flores, ramos, hojas, bordes, esquinas y motivos pequeños. Son diseños clásicos de libros de bordado antiguos, restaurados para que los puedas imprimir.</p>
+<ol>
+<li><strong>Toca una lámina</strong> para abrirla en tamaño completo.</li>
+<li><strong>Imprímela o guárdala</strong> en tu celular (mantén el dedo sobre la imagen y elige "Guardar").</li>
+<li><strong>Elige el diseño</strong> que quieras de la lámina. Muchas láminas traen varios diseños: puedes bordar uno solo.</li>
+<li><strong>Ajusta el tamaño</strong> al imprimir para que quepa en tu bastidor, y pásalo a la tela como en la lección <em>Pasar la plantilla a la tela</em>.</li>
+<li><strong>Dale color</strong> con una de las 30 paletas.</li>
+</ol>
+<div class="tip">💡 Los motivos pequeños son ideales para servilletas, toallas y recuerdos. Los bordes y esquinas quedan preciosos en cojines, manteles y cuellos de blusa.</div>`,
+      },
+      {
+        id: 'x4-2', title: 'Diseños grandes: ramos, bordes y esquinas', min: 10, videos: [],
+        body: laminasHTML(LAMINAS_GRANDES),
+        practice: 'Elige un ramo o una esquina y bórdalo en un cojín o un mantel.',
+      },
+      {
+        id: 'x4-3', title: 'Motivos pequeños: flores, hojas y adornos', min: 10, videos: [],
+        body: laminasHTML(LAMINAS_MOTIVOS),
+        practice: 'Elige 3 motivos pequeños y bórdalos en servilletas o en una toalla.',
       },
     ],
   },
