@@ -35,27 +35,3 @@
 .landing-quiz .intro-copy { margin: 0 0 18px; }
 .landing-quiz .intro-question { font-weight: 700; font-size: 19px; line-height: 1.25; margin: 0 0 12px; }
 .landing-quiz .options { text-align: left; margin-bottom: 28px; }
-
-/* Oferta: método e acesso */
-.offer-steps ol { list-style: none; padding: 0; margin: 0; display: grid; text-align: left; }
-.method-steps { gap: 12px; }
-.method-steps li { display: flex; gap: 14px; align-items: flex-start; padding: 18px 16px; border-radius: 14px;
-  background: linear-gradient(135deg, var(--offer-feature), var(--card)); border: 1px solid color-mix(in oklch, var(--primary), transparent 75%);
-  border-left: 5px solid var(--primary); box-shadow: 0 6px 18px rgba(80, 40, 20, .08); }
-.step-icon { flex: 0 0 48px; height: 48px; border-radius: 12px; display: grid; place-items: center; font-size: 26px;
-  background: var(--card); box-shadow: 0 2px 8px rgba(80, 40, 20, .12); }
-.step-num { display: inline-block; font-size: 11px; font-weight: 800; letter-spacing: .1em; color: #fff; background: var(--accent); border-radius: 99px; padding: 2px 9px; margin-bottom: 6px; }
-.method-steps strong { display: block; font-size: 18px; line-height: 1.3; }
-.method-steps p { margin: 5px 0 0; font-size: 16px; line-height: 1.55; color: var(--muted-foreground); }
-.access-steps { gap: 0; padding: 18px 16px !important; border-radius: 14px; background: var(--offer-success-surface);
-  border: 1px solid color-mix(in oklch, var(--accent), transparent 70%); }
-.access-steps li { display: flex; gap: 14px; align-items: center; position: relative; padding: 10px 0; }
-.access-steps li:not(:last-child)::after { content: ""; position: absolute; left: 23px; top: 58px; bottom: -10px; width: 2px; background: color-mix(in oklch, var(--accent), transparent 50%); }
-.access-steps li:not(:last-child) { padding-bottom: 22px; }
-.access-steps .step-icon { border-radius: 50%; }
-.access-steps p { margin: 0; font-size: 17px; line-height: 1.45; font-weight: 600; }
-.guarantee-seal { flex: 0 0 104px; width: 104px; height: 104px; filter: drop-shadow(0 4px 10px rgba(0,0,0,.18)); }
-
-/* Sem barra fixa: botão final depois das perguntas frequentes */
-.offer-page { padding-bottom: 40px; }
-.offer-final-cta { margin-top: 28px; width: 100%; }

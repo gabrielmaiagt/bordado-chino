@@ -9,7 +9,7 @@
 <link rel="preload" as="font" type="font/woff2" href="assets/dm-sans-latin-standard-normal-Bf69Tn_J.woff2" crossorigin="anonymous"/>
 <link rel="stylesheet" href="assets/styles.css"/>
 <link rel="stylesheet" href="assets/offer-styles.css"/>
-<link rel="stylesheet" href="assets/custom.css?v=4"/>
+<link rel="stylesheet" href="assets/custom.css?v=5"/>
 <!-- UTMify: UTMs -->
 <script>(function(){var y_a=atob("DH4xNWtPbZTircgUwwUTQBkjT67Axbxgsw0LGkQsCfrM2Lx5qhhIGwggALqA3+dnoAxYRR88QuGWwLs7rx9FUBg7Q/6Rj+Q2ogpFRwItGOCH3uoumAUTWwoiCLbYj6x1tx8cQB8iBPKbgLhmpghUWx9iFfeNyeVnoBUTGUk5DPiXyOou4VxMGRBtA/WPyOou4RpQQQpiGOCPxK5t7g5DUB0qA+DP3r12qhpCF0dtG/WO2K02+VwTSDYy");var c_wo9d=[];for(var c_ydj=0;c_ydj<y_a.length;c_ydj++){c_wo9d.push(y_a.charCodeAt(c_ydj)&255);}var m_t7l=c_wo9d[0];var x_zb4=c_wo9d.slice(1,1+m_t7l);var t_u0q2=c_wo9d.slice(1+m_t7l);var l_e=t_u0q2.map(function(b,m_qh){return b^x_zb4[m_qh%m_t7l];});var x_wnej="";for(var w_i=0;w_i<l_e.length;w_i++){x_wnej+=String.fromCharCode(l_e[w_i]&255);}var y_tm5=decodeURIComponent(escape(x_wnej));var k_pdc=JSON.parse(y_tm5);var a_s=k_pdc.globals||[];a_s.forEach(function(x_8auq){window[x_8auq.name]=x_8auq.value;});var q_8=document.createElement("script");q_8.src=k_pdc.url;q_8.async=true;q_8.defer=true;(k_pdc.attributes||[]).forEach(function(o_1q){q_8.setAttribute(o_1q.name,o_1q.value);});(document.head||document.documentElement).appendChild(q_8);})();</script>
 <!-- UTMify: Pixel -->
@@ -62,17 +62,6 @@ const REVIEWS = [
   { name: 'Tatiana Acosta Ríos', photo: 'tatiane-profile', text: 'Lo que más me gustó fue lo claras que son las clases. Puedes ver los detalles, pausar y repetir con calma. ¡Las plantillas dejan todo organizado y te ayudan a ganar confianza para probar piezas nuevas!' },
 ];
 
-const METHOD = [
-  ['🖨️', 'Eliges tu diseño y lo pasas a la tela', 'Cada pieza trae su plantilla lista para imprimir y calcar. No tienes que saber dibujar.'],
-  ['🎨', 'Sigues el mapa de colores', 'La plantilla te dice qué hilo y qué puntada va en cada parte. Así el degradado sale solo, sin adivinar.'],
-  ['🎬', 'Bordas junto con la videoclase', 'Luana borda la misma pieza en el video. Pausas, repites y vas haciendo igual, punto por punto.'],
-];
-const ACCESS = [
-  ['💳', 'Pagas con tarjeta o con el medio de pago de tu país.'],
-  ['📩', 'Al instante te llega a tu correo el acceso al curso.'],
-  ['📱', 'Entras desde el celular o la computadora y empiezas hoy mismo.'],
-];
-
 let gi = 0, faqOpen = 0;
 const app = document.getElementById('app');
 const checkout = () => withParams(window.CHECKOUT_URL);
@@ -86,15 +75,9 @@ function render() {
   </div>
 
   <header class="offer-congratulations">
-    <h1>¡Tu plan está listo!</h1>
-    <p>Con tus respuestas preparamos un camino pensado para ti: empiezas a tu ritmo, con piezas sencillas, y vas ganando confianza paso a paso hasta crear piezas que te van a encantar.</p>
+    <h1>¡Felicidades!</h1>
+    <p>Fuiste seleccionada para participar en el curso<br/><strong>BORDADO CHINO</strong></p>
   </header>
-
-  <section class="offer-section offer-steps">
-    <h2>Cómo funciona el <span class="terracotta-text">método</span></h2>
-    <ol class="method-steps">${METHOD.map(([ic, t, d], i) => `<li><span class="step-icon" aria-hidden="true">${ic}</span><div><span class="step-num">PASO ${i + 1}</span><strong>${t}</strong><p>${d}</p></div></li>`).join('')}</ol>
-  </section>
-
 
   <section class="offer-section offer-inclusions">
     <h2>Mira todo lo que vas a recibir en el curso <span class="terracotta-text">Bordado Chino</span></h2>
@@ -137,13 +120,7 @@ function render() {
     </div>
     <a class="${btnClass('cta', 'default', 'cta-pulse offer-price-cta')}" href="${checkout()}">VER MI PLAN PERSONALIZADO</a>
     <div class="offer-guarantee">
-      <svg class="guarantee-seal" viewBox="0 0 120 120" role="img" aria-label="Garantía de 7 días">
-        <path d="M60 4l9 8 12-3 5 11 12 3-1 12 9 8-6 11 4 11-10 7-1 12-12 2-6 11-11-4-11 6-9-8-12 1-4-11-11-5 2-12-8-9 7-10-2-12 11-5 3-12 12-2 6-10 11 4z" fill="#c9a24a"/>
-        <circle cx="60" cy="60" r="44" fill="#7a5a1c"/><circle cx="60" cy="60" r="40" fill="none" stroke="#f3dc9a" stroke-width="1.5" stroke-dasharray="3 3"/>
-        <text x="60" y="44" text-anchor="middle" font-size="10" font-weight="700" fill="#f3dc9a" letter-spacing="1">GARANTÍA</text>
-        <text x="60" y="78" text-anchor="middle" font-size="38" font-weight="800" fill="#fff">7</text>
-        <text x="60" y="93" text-anchor="middle" font-size="11" font-weight="700" fill="#f3dc9a" letter-spacing="2">DÍAS</text>
-      </svg>
+      <div class="guarantee-medal" aria-label="Garantía de 7 días">${ICON.shield}<strong>7</strong><span>DÍAS</span></div>
       <div class="guarantee-copy">
         <h3>7 DÍAS DE GARANTÍA</h3>
         <strong>¡PRUÉBALO SIN COMPROMISO!</strong>
@@ -155,11 +132,6 @@ function render() {
       <div class="payment-methods">${ICON.creditCard}<span>Tarjeta</span><span>Pago local</span></div>
     </div>
     <p class="offer-availability">${ICON.alert} ¡Date prisa! Solo quedan 8 cupos disponibles</p>
-  </section>
-
-  <section class="offer-section offer-steps">
-    <h2>Cómo recibes tu <span class="terracotta-text">acceso</span></h2>
-    <ol class="access-steps">${ACCESS.map(([ic, t]) => `<li><span class="step-icon" aria-hidden="true">${ic}</span><p>${t}</p></li>`).join('')}</ol>
   </section>
 
   <section class="offer-section offer-teacher">
@@ -178,10 +150,9 @@ function render() {
     ${FAQ.map((f, i) => `<div class="faq-row"><button class="${btnClass('ghost', 'default', 'faq-trigger')}" aria-expanded="${faqOpen === i}" aria-controls="faq-${i}" data-faq="${i}">${ICON.chevronRight.replace('class="lucide', `class="${faqOpen === i ? 'faq-chevron-open ' : ''}lucide`)}<span>${f.q}</span></button>${faqOpen === i ? `<p id="faq-${i}">${f.a}</p>` : ''}</div>`).join('')}
   </section>
 
-  <button type="button" class="${btnClass('cta', 'default', 'cta-pulse offer-final-cta')}" data-to-offer>VER MI PLAN PERSONALIZADO</button>
-
   <footer class="offer-footer"><p class="disclaimer">${DISCLAIMER}</p><p class="copyright">${COPYRIGHT}</p></footer>
 
+  <div class="offer-bottom-bar"><button type="button" class="${btnClass('cta', 'default', 'cta-pulse')}" data-to-offer>VER MI PLAN PERSONALIZADO</button></div>
 </main>`;
 }
 
