@@ -1,7 +1,7 @@
 import { getStore } from '@netlify/blobs';
 
 // Cada etapa vista vira uma chave dia/etapa/visitante, então conta pessoas únicas
-const STEPS = new Set(['landing', 'q1', 'q2', 'q3', 'q4', 'q5', 'q6', 'craft', 'prova', 'loading',
+const STEPS = new Set(['landing', 'q1', 'q2', 'q3', 'q4', 'q5', 'q6', 'craft', 'prova', 'loading', 'plan',
   'oferta', 'oferta_card', 'checkout', 'upsell', 'upsell_click', 'downsell', 'downsell_click']);
 
 export const day = () => new Date().toLocaleDateString('en-CA', { timeZone: 'America/Sao_Paulo' });

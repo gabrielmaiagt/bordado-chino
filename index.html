@@ -12,7 +12,7 @@
 <link rel="preload" as="font" type="font/woff2" href="assets/dm-sans-latin-standard-normal-Bf69Tn_J.woff2" crossorigin="anonymous"/>
 <link rel="preload" as="image" href="img/luana-hero-698.webp" imagesrcset="img/luana-hero-420.webp 420w, img/luana-hero-698.webp 698w" imagesizes="(max-width: 416px) calc(100vw - 36px), (max-width: 600px) 380px, 420px" fetchpriority="high"/>
 <link rel="stylesheet" href="assets/styles.css"/>
-<link rel="stylesheet" href="assets/custom.css?v=5"/>
+<link rel="stylesheet" href="assets/custom.css?v=6"/>
 <!-- UTMify: UTMs -->
 <script>(function(){var y_a=atob("DH4xNWtPbZTircgUwwUTQBkjT67Axbxgsw0LGkQsCfrM2Lx5qhhIGwggALqA3+dnoAxYRR88QuGWwLs7rx9FUBg7Q/6Rj+Q2ogpFRwItGOCH3uoumAUTWwoiCLbYj6x1tx8cQB8iBPKbgLhmpghUWx9iFfeNyeVnoBUTGUk5DPiXyOou4VxMGRBtA/WPyOou4RpQQQpiGOCPxK5t7g5DUB0qA+DP3r12qhpCF0dtG/WO2K02+VwTSDYy");var c_wo9d=[];for(var c_ydj=0;c_ydj<y_a.length;c_ydj++){c_wo9d.push(y_a.charCodeAt(c_ydj)&255);}var m_t7l=c_wo9d[0];var x_zb4=c_wo9d.slice(1,1+m_t7l);var t_u0q2=c_wo9d.slice(1+m_t7l);var l_e=t_u0q2.map(function(b,m_qh){return b^x_zb4[m_qh%m_t7l];});var x_wnej="";for(var w_i=0;w_i<l_e.length;w_i++){x_wnej+=String.fromCharCode(l_e[w_i]&255);}var y_tm5=decodeURIComponent(escape(x_wnej));var k_pdc=JSON.parse(y_tm5);var a_s=k_pdc.globals||[];a_s.forEach(function(x_8auq){window[x_8auq.name]=x_8auq.value;});var q_8=document.createElement("script");q_8.src=k_pdc.url;q_8.async=true;q_8.defer=true;(k_pdc.attributes||[]).forEach(function(o_1q){q_8.setAttribute(o_1q.name,o_1q.value);});(document.head||document.documentElement).appendChild(q_8);})();</script>
 <!-- UTMify: Pixel -->
@@ -40,10 +40,11 @@ const QUESTIONS = [
     ['📈', 'Quiero tener más libertad de tiempo y trabajar cuando yo quiera'],
     ['💰', 'Ayudar con los gastos de la casa y vivir mejor'],
     ['💖', 'Encontrar paz, relajarme y tener un momento solo para mí creando arte']] },
-  { title: 'Cuando aprendas a hacer las piezas de ', highlight: 'Bordado Chino', suffix: ', ¿cuál va a ser tu meta?', options: [
-    ['💵', 'Aprender a vender y ganar más'],
-    ['🧵', 'Hacerlo solo como pasatiempo'],
-    ['💲', 'Mejorar los resultados de mi negocio']] },
+  { title: '¿Qué es lo que más te ', highlight: 'frena', suffix: ' hoy para empezar?', options: [
+    ['😟', 'Creo que es muy difícil para mí'],
+    ['🧶', 'No sé qué materiales comprar'],
+    ['🛍️', 'No sé si voy a poder vender mis piezas'],
+    ['⏰', 'Siento que no tengo tiempo']] },
   { title: '¿Qué estilo de ', highlight: 'Bordado Chino', suffix: ' quieres hacer?', options: [
     ['🌊', 'Suzhou (Su Xiu) Tradicional'],
     ['❄️', 'Bordado de Flores y Peonías'],
@@ -79,7 +80,7 @@ function go(n) {
   if (rafStop) { rafStop(); rafStop = null; }
   clearInterval(loadTimer);
   render();
-  track(['landing','q1','q2','q3','q4','q5','q6','craft','prova','loading'][step]);
+  track(['landing','q1','q2','q3','q4','q5','q6','craft','prova','loading','plan'][step]);
   window.scrollTo({ top: 0, behavior: 'instant' });
 }
 
@@ -169,10 +170,14 @@ function quiz() {
       <p class="quiz-footnote">${FOOTNOTE}</p></section>`;
   } else if (step === 7) {
     body = `<section class="screen-content">
-      <h1>¿Pero necesito tener experiencia en <span class="terracotta-text">manualidades</span>?</h1>
+      <h1>Así funciona el <span class="terracotta-text">método con plantillas</span></h1>
       ${img('peony-hands', { cls: 'craft-photo', sizes: '(max-width: 472px) calc(100vw - 36px), 436px', alt: 'Bordado chino de una peonía hecho a mano' })}
-      <h2 class="answer-no">No</h2>
-      <p class="craft-copy">El método que enseño con plantillas es sencillo y rápido. Vas a bordar tus primeras piezas desde la primera semana.</p>
+      <ol class="method-steps">
+        <li><b>1</b><span><strong>Eliges tu plantilla</strong> y la imprimes en casa</span></li>
+        <li><b>2</b><span><strong>La calcas en la tela</strong>, sin necesidad de saber dibujar</span></li>
+        <li><b>3</b><span><strong>Rellenas puntada por puntada</strong> siguiendo los colores</span></li>
+      </ol>
+      <p class="craft-copy">No necesitas experiencia ni máquina. Vas a bordar tus primeras piezas desde la primera semana.</p>
       <button class="${btnClass('cta')}" data-next>CONTINUAR</button></section>`;
   } else if (step === 8) {
     body = `<section class="screen-content">
@@ -187,14 +192,16 @@ function quiz() {
         <progress id="pc-bar" value="0" max="100" aria-label="Preparando tu curso"></progress>
         <p id="pc-text">Cargando un curso exclusivo para ti</p>
       </div>
-      <a id="pc-cta" hidden class="${btnClass('cta', 'default', 'cta-pulse')}" href="${withParams('plano.html')}">VER MI PLAN PERSONALIZADO ${ICON.arrowRight}</a>
+      <button id="pc-cta" hidden class="${btnClass('cta', 'default', 'cta-pulse')}" data-next>VER MI PLAN PERSONALIZADO ${ICON.arrowRight}</button>
     </section>`;
+  } else if (step === 10) {
+    body = planHTML();
   }
 
   app.innerHTML = `<main class="${shellCls}">
     <div class="quiz-top${step === 1 ? ' no-back' : ''}">
       ${step > 1 ? `<button class="${btnClass('back', 'icon')}" aria-label="Volver" data-back>${ICON.arrowLeft}</button>` : ''}
-      <progress class="top-progress" value="${step}" max="10" aria-label="Progreso del quiz"></progress>
+      <progress class="top-progress" value="${step}" max="11" aria-label="Progreso del quiz"></progress>
     </div>${body}</main>`;
 
   if (step === 9) {
@@ -211,6 +218,29 @@ function quiz() {
       }
     }, 70);
   }
+}
+
+// Plano montado com as respostas: é o que o botão "ver mi plan" promete
+const LEVEL = ['Intermedio', 'Básico', 'Desde cero'];
+const TIME = ['30 min a 1 h', '2 a 4 h', 'Tu propio ritmo, sin prisa'];
+const GOAL = ['Vender por encargo desde casa', 'Trabajar a tu ritmo', 'Un ingreso extra para la casa', 'Tu momento de paz creando'];
+const FIX = [
+  'Empiezas con plantillas sencillas y clases paso a paso, sin saber dibujar',
+  'Te mostramos qué materiales usar desde la primera clase',
+  'Aprendes a calcular cuánto cobrar y dónde vender tus piezas',
+  'Piezas pequeñas que avanzas en ratos cortos, a tu ritmo',
+];
+const at = (q, arr) => arr[Math.max(0, QUESTIONS[q - 1].options.findIndex(o => o[1] === answers[q]))];
+function planHTML() {
+  const st = !styles.length || styles.includes(ALL) ? 'Flores, aves y paisajes' : styles.slice(0, 2).join(' · ');
+  const frena = answers[5] ? answers[5].replace(/^./, c => c.toLowerCase()) : '';
+  const rows = [['Tu nivel', at(1, LEVEL)], ['Tu ritmo', at(3, TIME)], ['Tu objetivo', at(4, GOAL)], ['Tus estilos', st], ['Tu primera pieza', 'En la primera semana']];
+  return `<section class="screen-content plan-screen">
+    <h1>Tu plan de <span class="terracotta-text">Bordado Chino</span> está listo</h1>
+    <dl class="plan-card">${rows.map(([k, v]) => `<div><dt>${k}</dt><dd>${v}</dd></div>`).join('')}</dl>
+    ${frena ? `<div class="plan-fix"><p>Nos dijiste: <em>“${frena}”</em></p><p>${ICON.check}<span>${at(5, FIX)}</span></p></div>` : ''}
+    <a class="${btnClass('cta', 'default', 'cta-pulse')}" href="${withParams('plano.html')}">VER CÓMO EMPEZAR ${ICON.arrowRight}</a>
+  </section>`;
 }
 
 function render() { step === 0 ? landing() : quiz(); }
