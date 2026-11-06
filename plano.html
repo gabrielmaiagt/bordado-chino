@@ -73,7 +73,8 @@ const checkout = () => withParams(window.CHECKOUT_URL);
 
 function render() {
   const [gk, galt] = GALLERY[gi];
-  app.innerHTML = `<main class="offer-page">
+  // O topo com a VSL só é desenhado uma vez: redesenhar reiniciaria o vídeo
+  if (!document.getElementById('offer-rest')) app.innerHTML = `<main class="offer-page">
   <div class="quiz-top">
     <a class="${btnClass('back', 'icon')}" href="${withParams('index.html')}" aria-label="Volver al quiz">${ICON.arrowLeft}</a>
     <progress class="top-progress" value="10" max="10" aria-label="Quiz completado"></progress>
@@ -84,6 +85,10 @@ function render() {
     <p>Fuiste seleccionada para participar en el curso<br/><strong>BORDADO CHINO</strong></p>
   </header>
 
+  <vturb-smartplayer id="vid-6aee1841c647a1fb80e8139a" style="display: block; margin: 0 auto 24px; width: 100%; max-width: 400px;"><div class="vturb-player-placeholder" style="position: relative; width: 100%; padding: 177.77777777777777% 0 0; z-index: 0; background-color: black;"></div></vturb-smartplayer>
+  <div id="offer-rest" style="display: contents"></div>
+</main>`;
+  document.getElementById('offer-rest').innerHTML = `
   <section class="offer-section offer-inclusions">
     <h2>Mira todo lo que vas a recibir en el curso <span class="terracotta-text">Bordado Chino</span></h2>
     <ul>${INCLUDES.map(t => `<li>${ICON.check}<span>${t}</span></li>`).join('')}</ul>
@@ -168,8 +173,7 @@ function render() {
 
   <footer class="offer-footer"><p class="disclaimer">${DISCLAIMER}</p><p class="copyright">${COPYRIGHT}</p></footer>
 
-  <div class="offer-bottom-bar"><button type="button" class="${btnClass('cta', 'default', 'cta-pulse')}" data-to-offer>QUIERO EMPEZAR AHORA</button></div>
-</main>`;
+  <div class="offer-bottom-bar"><button type="button" class="${btnClass('cta', 'default', 'cta-pulse')}" data-to-offer>QUIERO EMPEZAR AHORA</button></div>`;
 }
 
 app.addEventListener('click', e => {
@@ -187,6 +191,8 @@ app.addEventListener('click', e => {
 });
 
 render();
+// Player da VSL (VTurb)
+var s=document.createElement("script"); s.src="https://scripts.converteai.net/12697a4b-7984-4828-9220-b47e396bfca6/players/6aee1841c647a1fb80e8139a/v4/player.js", s.async=!0,document.head.appendChild(s);
 window.scrollTo({ top: 0 });
 track('oferta');
 // Chegou a ver o card de preço
